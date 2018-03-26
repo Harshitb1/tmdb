@@ -50,7 +50,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
                 listener.onItemClick(holder.getAdapterPosition());
             }
         });
-        Picasso.get().load(movie.getPoster_path()).into(holder.avatar);
+        Picasso.get().load("https://avatars0.githubusercontent.com/u/164749?v=4").into(holder.avatar);
 
     }
 

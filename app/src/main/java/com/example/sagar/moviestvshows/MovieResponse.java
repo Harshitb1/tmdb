@@ -1,5 +1,7 @@
 package com.example.sagar.moviestvshows;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -12,6 +14,7 @@ public class MovieResponse {
     int page;
     int total_results;
     int total_pages;
+    @SerializedName("results")
     ArrayList<Movies> movies;
 
     public int getPage() {

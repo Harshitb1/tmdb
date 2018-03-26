@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         adapter= new MovieRecyclerAdapter(movies, this, new MovieRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent= new Intent();
+                Toast.makeText(MainActivity.this,"1",Toast.LENGTH_SHORT);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 MovieResponse response1=response.body();
                 ArrayList<Movies> moviesList = response1.getMovies();
-
                 if(moviesList != null){
                     movies.clear();
                     movies.addAll(moviesList);
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
                 recyclerView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
