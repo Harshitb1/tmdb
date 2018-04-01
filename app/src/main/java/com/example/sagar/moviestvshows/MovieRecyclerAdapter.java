@@ -2,6 +2,7 @@ package com.example.sagar.moviestvshows;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,15 +43,16 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
 
     @Override
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
-     Movies movie= movies.get(position);
+        Movies movie= movies.get(position);
         holder.username.setText(movie.getTitle());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("abcd","1");
                 listener.onItemClick(holder.getAdapterPosition());
             }
         });
-        Picasso.get().load("https://avatars0.githubusercontent.com/u/164749?v=4").into(holder.avatar);
+        Picasso.get().load("http://image.tmdb.org/t/p/original/"+movie.getPoster_path()).into(holder.avatar);
 
     }
 

@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         adapter= new MovieRecyclerAdapter(movies, this, new MovieRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(MainActivity.this,"1",Toast.LENGTH_SHORT);
+                Log.d("a",position+"");
+                Toast.makeText(MainActivity.this,"1",Toast.LENGTH_SHORT).show();
             }
         });
         recyclerView.setAdapter(adapter);
