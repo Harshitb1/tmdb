@@ -1,11 +1,14 @@
 package com.example.sagar.moviestvshows;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,15 +25,18 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     ArrayList<Movies> movies;
     Context context;
     OnItemClickListener listener;
+    WindowManager windowManager;
 
+    int height,width;
     interface OnItemClickListener {
         void onItemClick(int position);
     }
 
-    public MovieRecyclerAdapter(ArrayList<Movies> movies, Context context, OnItemClickListener listener) {
+    public MovieRecyclerAdapter(ArrayList<Movies> movies, Context context, OnItemClickListener listener,WindowManager windowManager) {
         this.movies = movies;
         this.context = context;
         this.listener=listener;
+        this.windowManager=windowManager;
     }
 
     @Override
@@ -52,7 +58,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
                 listener.onItemClick(holder.getAdapterPosition());
             }
         });
-        Picasso.get().load("http://image.tmdb.org/t/p/original/"+movie.getPoster_path()).into(holder.avatar);
+        Picasso.get().load("http://image.tmdb.org/t/p/w780/"+movie.getBackdrop_path()).resize(width,0).into(holder.avatar);
 
     }
 
@@ -68,12 +74,21 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         ImageView avatar;
         View itemView;
 
+
         public MovieViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             username = itemView.findViewById(R.id.username);
             avatar = itemView.findViewById(R.id.avatar);
+            getScreenSize();
         }
     }
 
+    public void getScreenSize(){
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+    }
 }
