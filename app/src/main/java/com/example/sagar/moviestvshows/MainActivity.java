@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 Movies movie= popularmovies.get(position);
                 Intent intent = new Intent(MainActivity.this,MovieProfileActivity.class);
                 Bundle bundle= new Bundle();
+                bundle.putInt("id",movie.getId());
                 bundle.putString("name",movie.getTitle());
                 bundle.putString("poster_path",movie.getPoster_path());
                 intent.putExtras(bundle);
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle= new Bundle();
                 bundle.putString("name",movie.getTitle());
                 bundle.putString("poster_path",movie.getPoster_path());
+                bundle.putInt("id",movie.getId());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void fetchTopratedMovies(){
+        recyclerView1.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getTopratedmovies("9e88cc754362f676e652e8856be5d62d");
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     topratedmovies.addAll(moviesList);
                     adapter.notifyDataSetChanged();
                 }
+                recyclerView1.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
@@ -99,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
+                recyclerView1.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
@@ -108,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void fetchPopularMovies(){
+        recyclerView1.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getPopularMovies("9e88cc754362f676e652e8856be5d62d");
@@ -122,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 }
                 recyclerView.setVisibility(View.VISIBLE);
+                recyclerView1.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -129,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                     Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
                 recyclerView.setVisibility(View.VISIBLE);
+                recyclerView1.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
         });
