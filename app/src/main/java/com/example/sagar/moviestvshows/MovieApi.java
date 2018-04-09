@@ -31,5 +31,13 @@ public interface MovieApi {
     @GET("person/{person_id}/movie_credits")
     Call<MovieCredits> getMovieCredits(@Path("person_id") int id, @Query("api_key") String key);
 
+    @GET("movie/now_playing")
+    Call<MovieResponse> getNowPlayingMovies (@Query("api_key") String key);
+
+    @GET("movie/{movie_id}/similar")
+    Call<MovieResponse> getSimilarMovies(@Path("movie_id") int id, @Query("api_key") String key);
+
+    @GET("movie/upcoming")
+    Call<MovieResponse> getUpcomingMovies(@Query("api_key") String key);
 
 }
