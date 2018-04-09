@@ -24,4 +24,12 @@ public interface MovieApi {
 
     @GET("movie/{movie_id}/credits")
     Call<MovieCastResponse> getCastDetails(@Path("movie_id") int id, @Query("api_key") String key);
+
+    @GET("person/{person_id}")
+    Call<ActorDetails> getActorDetails(@Path("person_id") int id, @Query("api_key") String key);
+
+    @GET("person/{person_id}/movie_credits")
+    Call<MovieCredits> getMovieCredits(@Path("person_id") int id, @Query("api_key") String key);
+
+
 }
