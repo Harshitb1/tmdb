@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         moviesDAO=TmdbDatabase.getInstance(this).getMoviesDao();
 
         moviesDAO= TmdbDatabase.getInstance(this).getMoviesDao();
-        popularmovies=(ArrayList<Movies>)  moviesDAO.getPopularMovies();
-        topratedmovies= (ArrayList<Movies>)moviesDAO.getTopRatedMovies();
-        upcomingmovies= (ArrayList<Movies>)moviesDAO.getUpcomingMovies();
-        nowplayingmovies= (ArrayList<Movies>)moviesDAO.getNowPlayingMovies();
+//        popularmovies=(ArrayList<Movies>)  moviesDAO.getPopularMovies();
+//        topratedmovies= (ArrayList<Movies>)moviesDAO.getTopRatedMovies();
+//        upcomingmovies= (ArrayList<Movies>)moviesDAO.getUpcomingMovies();
+//        nowplayingmovies= (ArrayList<Movies>)moviesDAO.getNowPlayingMovies();
 
         windowManager=getWindowManager();
 
