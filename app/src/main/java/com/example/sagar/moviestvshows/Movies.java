@@ -1,11 +1,23 @@
 package com.example.sagar.moviestvshows;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+import org.xml.sax.helpers.DefaultHandler;
+
+import java.util.ArrayList;
+
 /**
  * Created by SAGAR on 25-03-2018.
  */
 
+@Entity
 public class Movies {
 
+    @PrimaryKey
+    @NonNull
     int id;
     boolean video;
     String title;
@@ -15,6 +27,51 @@ public class Movies {
     String backdrop_path;
     String vote_average;
     String original_title;
+    boolean isTopRated;
+    boolean isPopular;
+    boolean isNowPlaying;
+    boolean isUpcoming;
+    boolean isFavourite;
+
+    public boolean isTopRated() {
+        return isTopRated;
+    }
+
+    public void setTopRated(boolean topRated) {
+        isTopRated = topRated;
+    }
+
+    public boolean isPopular() {
+        return isPopular;
+    }
+
+    public void setPopular(boolean popular) {
+        isPopular = popular;
+    }
+
+    public boolean isNowPlaying() {
+        return isNowPlaying;
+    }
+
+    public void setNowPlaying(boolean nowPlaying) {
+        isNowPlaying = nowPlaying;
+    }
+
+    public boolean isUpcoming() {
+        return isUpcoming;
+    }
+
+    public void setUpcoming(boolean upcoming) {
+        isUpcoming = upcoming;
+    }
+
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        isFavourite = favourite;
+    }
 
     public void setId(int id) {
         this.id = id;

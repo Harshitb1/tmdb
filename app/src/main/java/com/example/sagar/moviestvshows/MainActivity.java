@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Movies> topratedmovies = new ArrayList<>();
     ArrayList<Movies> nowplayingmovies = new ArrayList<>();
     ArrayList<Movies> upcomingmovies = new ArrayList<>();
+    MoviesDAO moviesDAO;
     WindowManager windowManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerView2= findViewById(R.id.rvNowPlaying);
         recyclerView3 = findViewById(R.id.rvUpcomingMovies);
         progressBar = findViewById(R.id.progressBar);
-        fetchPopularMovies();
+        moviesDAO=TmdbDatabase.getInstance(this).getMoviesDao();
+
+        moviesDAO= TmdbDatabase.getInstance(this).getMoviesDao();
+        popularmovies=(ArrayList<Movies>)  moviesDAO.getPopularMovies();
+        topratedmovies= (ArrayList<Movies>)moviesDAO.getTopRatedMovies();
+        upcomingmovies= (ArrayList<Movies>)moviesDAO.getUpcomingMovies();
+        nowplayingmovies= (ArrayList<Movies>)moviesDAO.getNowPlayingMovies();
+
         windowManager=getWindowManager();
+
         adapter= new MovieRecyclerAdapter(popularmovies, this, new MovieRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -56,12 +65,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         },windowManager);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        fetchTopratedMovies();
 
         adapter1= new MovieRecyclerAdapter(topratedmovies, this, new MovieRecyclerAdapter.OnItemClickListener() {
             @Override
@@ -77,12 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         },windowManager);
-        recyclerView1.setAdapter(adapter1);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView1.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        recyclerView1.setItemAnimator(new DefaultItemAnimator());
 
-        fetchNowPlayingMovies();
         adapter2= new MovieRecyclerAdapter(nowplayingmovies, this, new MovieRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -97,12 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         },windowManager);
-        recyclerView2.setAdapter(adapter2);
-        recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView2.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        recyclerView2.setItemAnimator(new DefaultItemAnimator());
 
-        fetchUpcomingMovies();
         adapter3= new MovieRecyclerAdapter(upcomingmovies, this, new MovieRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -117,6 +110,32 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         },windowManager);
+
+        fetchPopularMovies();
+
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        fetchTopratedMovies();
+
+
+        recyclerView1.setAdapter(adapter1);
+        recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView1.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        recyclerView1.setItemAnimator(new DefaultItemAnimator());
+
+        fetchNowPlayingMovies();
+
+        recyclerView2.setAdapter(adapter2);
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView2.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        recyclerView2.setItemAnimator(new DefaultItemAnimator());
+
+        fetchUpcomingMovies();
+
         recyclerView3.setAdapter(adapter3);
         recyclerView3.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView3.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
@@ -124,11 +143,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchUpcomingMovies() {
-        recyclerView2.setVisibility(View.GONE);
-        recyclerView3.setVisibility(View.GONE);
-        recyclerView1.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+
+//        recyclerView2.setVisibility(View.GONE);
+//        recyclerView3.setVisibility(View.GONE);
+//        recyclerView1.setVisibility(View.GONE);
+//        recyclerView.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.VISIBLE);
+
         Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getUpcomingMovies("9e88cc754362f676e652e8856be5d62d");
         call.enqueue(new Callback<MovieResponse>() {
             @Override
@@ -139,32 +160,37 @@ public class MainActivity extends AppCompatActivity {
                     upcomingmovies.clear();
                     upcomingmovies.addAll(moviesList);
                     adapter3.notifyDataSetChanged();
+                    moviesDAO.insertMovieList(moviesList);
+                    for(int i=0;i<moviesList.size();i++){
+                        Movies m= moviesList.get(i);
+                         m.setUpcoming(true);
+                    }
                 }
-                recyclerView1.setVisibility(View.VISIBLE);
-                recyclerView3.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView2.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+//                recyclerView1.setVisibility(View.VISIBLE);
+//                recyclerView3.setVisibility(View.VISIBLE);
+//                recyclerView.setVisibility(View.VISIBLE);
+//                recyclerView2.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
-                recyclerView1.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView2.setVisibility(View.VISIBLE);
-                recyclerView3.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+//                recyclerView1.setVisibility(View.VISIBLE);
+//                recyclerView.setVisibility(View.VISIBLE);
+//                recyclerView2.setVisibility(View.VISIBLE);
+//                recyclerView3.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.GONE);
             }
 
         });
     }
 
     private void fetchNowPlayingMovies() {
-        recyclerView2.setVisibility(View.GONE);
-        recyclerView1.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+//        recyclerView2.setVisibility(View.GONE);
+//        recyclerView1.setVisibility(View.GONE);
+//        recyclerView.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.VISIBLE);
         Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getNowPlayingMovies("9e88cc754362f676e652e8856be5d62d");
         call.enqueue(new Callback<MovieResponse>() {
             @Override
@@ -175,30 +201,34 @@ public class MainActivity extends AppCompatActivity {
                     nowplayingmovies.clear();
                     nowplayingmovies.addAll(moviesList);
                     adapter2.notifyDataSetChanged();
+                    moviesDAO.insertMovieList(moviesList);
+                    for(int i=0;i<moviesList.size();i++){
+                        Movies m= moviesList.get(i);
+                        m.setNowPlaying(true);
+                    }
                 }
-                recyclerView1.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView2.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+//                recyclerView1.setVisibility(View.VISIBLE);
+//                recyclerView.setVisibility(View.VISIBLE);
+//                recyclerView2.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
-                recyclerView1.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView2.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+//                recyclerView1.setVisibility(View.VISIBLE);
+//                recyclerView.setVisibility(View.VISIBLE);
+//                recyclerView2.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.GONE);
             }
         });
 
     }
 
-
     public void fetchTopratedMovies(){
-        recyclerView1.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+//        recyclerView1.setVisibility(View.GONE);
+//        recyclerView.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.VISIBLE);
         Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getTopratedmovies("9e88cc754362f676e652e8856be5d62d");
         call.enqueue(new Callback<MovieResponse>() {
             @Override
@@ -209,28 +239,32 @@ public class MainActivity extends AppCompatActivity {
                     topratedmovies.clear();
                     topratedmovies.addAll(moviesList);
                     adapter1.notifyDataSetChanged();
+                    moviesDAO.insertMovieList(moviesList);
+                    for(int i=0;i<moviesList.size();i++){
+                        Movies m= moviesList.get(i);
+                        m.setTopRated(true);
+                    }
                 }
-                recyclerView1.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+//                recyclerView1.setVisibility(View.VISIBLE);
+//                recyclerView.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
-                recyclerView1.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+//                recyclerView1.setVisibility(View.VISIBLE);
+//                recyclerView.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.GONE);
             }
         });
 
     }
 
-
     public void fetchPopularMovies(){
-        recyclerView1.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+//        recyclerView1.setVisibility(View.GONE);
+//        recyclerView.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.VISIBLE);
         Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getPopularMovies("9e88cc754362f676e652e8856be5d62d");
         call.enqueue(new Callback<MovieResponse>() {
             @Override
@@ -241,18 +275,23 @@ public class MainActivity extends AppCompatActivity {
                     popularmovies.clear();
                     popularmovies.addAll(moviesList);
                     adapter.notifyDataSetChanged();
+                    moviesDAO.insertMovieList(moviesList);
+                    for(int i=0;i<moviesList.size();i++){
+                        Movies m= moviesList.get(i);
+                        m.setPopular(true);
+                    }
                 }
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView1.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+//                recyclerView.setVisibility(View.VISIBLE);
+//                recyclerView1.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                     Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView1.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+//                recyclerView.setVisibility(View.VISIBLE);
+//                recyclerView1.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.GONE);
             }
         });
 

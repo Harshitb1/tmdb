@@ -59,6 +59,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
                 listener.onItemClick(holder.getAdapterPosition());
             }
         });
+
         Picasso.get().load("http://image.tmdb.org/t/p/w780/"+movie.getBackdrop_path()).resize(width,0).into(holder.avatar);
        // Glide.with(context).load("http://image.tmdb.org/t/p/w780/"+movie.getBackdrop_path()).override(width,width/2).into(holder.avatar);
        Log.d("121","http://image.tmdb.org/t/p/w780/"+movie.getBackdrop_path());
