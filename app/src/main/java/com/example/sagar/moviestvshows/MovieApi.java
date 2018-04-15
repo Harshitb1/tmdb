@@ -40,4 +40,7 @@ public interface MovieApi {
     @GET("movie/upcoming")
     Call<MovieResponse> getUpcomingMovies(@Query("api_key") String key);
 
+    @GET("movie/{movie_id}/videos")
+    Call<MovieVideoResponse> getTrailers(@Path("movie_id") int id,@Query("api_key") String key);
+
 }

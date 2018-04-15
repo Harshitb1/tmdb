@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class Movies {
 
     @PrimaryKey
-    @NonNull
     int id;
     boolean video;
     String title;
@@ -27,50 +26,50 @@ public class Movies {
     String backdrop_path;
     String vote_average;
     String original_title;
-    boolean isTopRated;
-    boolean isPopular;
-    boolean isNowPlaying;
-    boolean isUpcoming;
-    boolean isFavourite;
+    int isTopRated;
+    int isPopular;
+    int isNowPlaying;
+    int isUpcoming;
+    int isFavourite;
 
-    public boolean isTopRated() {
+    public int getIsTopRated() {
         return isTopRated;
     }
 
-    public void setTopRated(boolean topRated) {
-        isTopRated = topRated;
+    public void setIsTopRated(int isTopRated) {
+        this.isTopRated = isTopRated;
     }
 
-    public boolean isPopular() {
+    public int getIsPopular() {
         return isPopular;
     }
 
-    public void setPopular(boolean popular) {
-        isPopular = popular;
+    public void setIsPopular(int isPopular) {
+        this.isPopular = isPopular;
     }
 
-    public boolean isNowPlaying() {
+    public int getIsNowPlaying() {
         return isNowPlaying;
     }
 
-    public void setNowPlaying(boolean nowPlaying) {
-        isNowPlaying = nowPlaying;
+    public void setIsNowPlaying(int isNowPlaying) {
+        this.isNowPlaying = isNowPlaying;
     }
 
-    public boolean isUpcoming() {
+    public int getIsUpcoming() {
         return isUpcoming;
     }
 
-    public void setUpcoming(boolean upcoming) {
-        isUpcoming = upcoming;
+    public void setIsUpcoming(int isUpcoming) {
+        this.isUpcoming = isUpcoming;
     }
 
-    public boolean isFavourite() {
+    public int getIsFavourite() {
         return isFavourite;
     }
 
-    public void setFavourite(boolean favourite) {
-        isFavourite = favourite;
+    public void setIsFavourite(int isFavourite) {
+        this.isFavourite = isFavourite;
     }
 
     public void setId(int id) {

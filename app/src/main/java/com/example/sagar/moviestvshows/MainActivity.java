@@ -1,6 +1,8 @@
 package com.example.sagar.moviestvshows;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,281 +22,42 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
-    RecyclerView recyclerView,recyclerView1, recyclerView2, recyclerView3;
-    ProgressBar progressBar;
-    MovieRecyclerAdapter adapter, adapter1,adapter2,adapter3;
-    ArrayList<Movies> popularmovies = new ArrayList<>();
-    ArrayList<Movies> topratedmovies = new ArrayList<>();
-    ArrayList<Movies> nowplayingmovies = new ArrayList<>();
-    ArrayList<Movies> upcomingmovies = new ArrayList<>();
-    MoviesDAO moviesDAO;
-    WindowManager windowManager;
+public class MainActivity extends AppCompatActivity implements MoviesFragment.MovieSelectedCallback{
+
+
+    ViewPager viewPager;
+    ViewPagerAdapter viewPagerAdapter;
+    TabLayout tabLayout;
+
+    private final static String pageTitle[] = {"MOVIES", "TV SHOWS"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView1 = findViewById(R.id.recyclerView1);
-        recyclerView2= findViewById(R.id.rvNowPlaying);
-        recyclerView3 = findViewById(R.id.rvUpcomingMovies);
-        progressBar = findViewById(R.id.progressBar);
-        moviesDAO=TmdbDatabase.getInstance(this).getMoviesDao();
-
-        moviesDAO= TmdbDatabase.getInstance(this).getMoviesDao();
-//        popularmovies=(ArrayList<Movies>)  moviesDAO.getPopularMovies();
-//        topratedmovies= (ArrayList<Movies>)moviesDAO.getTopRatedMovies();
-//        upcomingmovies= (ArrayList<Movies>)moviesDAO.getUpcomingMovies();
-//        nowplayingmovies= (ArrayList<Movies>)moviesDAO.getNowPlayingMovies();
-
-        windowManager=getWindowManager();
-
-        adapter= new MovieRecyclerAdapter(popularmovies, this, new MovieRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Log.d("a",position+"");
-                Movies movie= popularmovies.get(position);
-                Intent intent = new Intent(MainActivity.this,MovieProfileActivity.class);
-                Bundle bundle= new Bundle();
-                bundle.putInt("id",movie.getId());
-                bundle.putString("name",movie.getTitle());
-                bundle.putString("poster_path",movie.getPoster_path());
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        },windowManager);
-
-        adapter1= new MovieRecyclerAdapter(topratedmovies, this, new MovieRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Log.d("a",position+"");
-                Movies movie= topratedmovies.get(position);
-                Intent intent = new Intent(MainActivity.this,MovieProfileActivity.class);
-                Bundle bundle= new Bundle();
-                bundle.putString("name",movie.getTitle());
-                bundle.putString("poster_path",movie.getPoster_path());
-                bundle.putInt("id",movie.getId());
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        },windowManager);
-
-        adapter2= new MovieRecyclerAdapter(nowplayingmovies, this, new MovieRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Log.d("a",position+"");
-                Movies movie= nowplayingmovies.get(position);
-                Intent intent = new Intent(MainActivity.this,MovieProfileActivity.class);
-                Bundle bundle= new Bundle();
-                bundle.putString("name",movie.getTitle());
-                bundle.putString("poster_path",movie.getPoster_path());
-                bundle.putInt("id",movie.getId());
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        },windowManager);
-
-        adapter3= new MovieRecyclerAdapter(upcomingmovies, this, new MovieRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Log.d("a",position+"");
-                Movies movie= upcomingmovies.get(position);
-                Intent intent = new Intent(MainActivity.this,MovieProfileActivity.class);
-                Bundle bundle= new Bundle();
-                bundle.putString("name",movie.getTitle());
-                bundle.putString("poster_path",movie.getPoster_path());
-                bundle.putInt("id",movie.getId());
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        },windowManager);
-
-        fetchPopularMovies();
-
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        fetchTopratedMovies();
-
-
-        recyclerView1.setAdapter(adapter1);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView1.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        recyclerView1.setItemAnimator(new DefaultItemAnimator());
-
-        fetchNowPlayingMovies();
-
-        recyclerView2.setAdapter(adapter2);
-        recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView2.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        recyclerView2.setItemAnimator(new DefaultItemAnimator());
-
-        fetchUpcomingMovies();
-
-        recyclerView3.setAdapter(adapter3);
-        recyclerView3.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView3.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        recyclerView3.setItemAnimator(new DefaultItemAnimator());
-    }
-
-    private void fetchUpcomingMovies() {
-
-//        recyclerView2.setVisibility(View.GONE);
-//        recyclerView3.setVisibility(View.GONE);
-//        recyclerView1.setVisibility(View.GONE);
-//        recyclerView.setVisibility(View.GONE);
-//        progressBar.setVisibility(View.VISIBLE);
-
-        Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getUpcomingMovies("9e88cc754362f676e652e8856be5d62d");
-        call.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                MovieResponse response1=response.body();
-                ArrayList<Movies> moviesList = response1.getMovies();
-                if(moviesList != null){
-                    upcomingmovies.clear();
-                    upcomingmovies.addAll(moviesList);
-                    adapter3.notifyDataSetChanged();
-                    moviesDAO.insertMovieList(moviesList);
-                    for(int i=0;i<moviesList.size();i++){
-                        Movies m= moviesList.get(i);
-                         m.setUpcoming(true);
-                    }
-                }
-//                recyclerView1.setVisibility(View.VISIBLE);
-//                recyclerView3.setVisibility(View.VISIBLE);
-//                recyclerView.setVisibility(View.VISIBLE);
-//                recyclerView2.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
-//                recyclerView1.setVisibility(View.VISIBLE);
-//                recyclerView.setVisibility(View.VISIBLE);
-//                recyclerView2.setVisibility(View.VISIBLE);
-//                recyclerView3.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
-            }
-
-        });
-    }
-
-    private void fetchNowPlayingMovies() {
-//        recyclerView2.setVisibility(View.GONE);
-//        recyclerView1.setVisibility(View.GONE);
-//        recyclerView.setVisibility(View.GONE);
-//        progressBar.setVisibility(View.VISIBLE);
-        Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getNowPlayingMovies("9e88cc754362f676e652e8856be5d62d");
-        call.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                MovieResponse response1=response.body();
-                ArrayList<Movies> moviesList = response1.getMovies();
-                if(moviesList != null){
-                    nowplayingmovies.clear();
-                    nowplayingmovies.addAll(moviesList);
-                    adapter2.notifyDataSetChanged();
-                    moviesDAO.insertMovieList(moviesList);
-                    for(int i=0;i<moviesList.size();i++){
-                        Movies m= moviesList.get(i);
-                        m.setNowPlaying(true);
-                    }
-                }
-//                recyclerView1.setVisibility(View.VISIBLE);
-//                recyclerView.setVisibility(View.VISIBLE);
-//                recyclerView2.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
-//                recyclerView1.setVisibility(View.VISIBLE);
-//                recyclerView.setVisibility(View.VISIBLE);
-//                recyclerView2.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
-            }
-        });
+        viewPager = findViewById(R.id.viewPager);
+        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragment(new MoviesFragment(),pageTitle[0]);
+        viewPagerAdapter.addFragment(new TvFragment(),pageTitle[1]);
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.cardview_dark_background));
 
     }
 
-    public void fetchTopratedMovies(){
-//        recyclerView1.setVisibility(View.GONE);
-//        recyclerView.setVisibility(View.GONE);
-//        progressBar.setVisibility(View.VISIBLE);
-        Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getTopratedmovies("9e88cc754362f676e652e8856be5d62d");
-        call.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                MovieResponse response1=response.body();
-                ArrayList<Movies> moviesList = response1.getMovies();
-                if(moviesList != null){
-                    topratedmovies.clear();
-                    topratedmovies.addAll(moviesList);
-                    adapter1.notifyDataSetChanged();
-                    moviesDAO.insertMovieList(moviesList);
-                    for(int i=0;i<moviesList.size();i++){
-                        Movies m= moviesList.get(i);
-                        m.setTopRated(true);
-                    }
-                }
-//                recyclerView1.setVisibility(View.VISIBLE);
-//                recyclerView.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
-            }
 
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
-//                recyclerView1.setVisibility(View.VISIBLE);
-//                recyclerView.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
-            }
-        });
-
+    @Override
+    public void onMovieSelected(Movies movie) {
+        Intent intent = new Intent(MainActivity.this,MovieProfileActivity.class);
+        Bundle bundle= new Bundle();
+        bundle.putInt("id",movie.getId());
+        bundle.putString("name",movie.getTitle());
+        bundle.putString("poster_path",movie.getPoster_path());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
-
-    public void fetchPopularMovies(){
-//        recyclerView1.setVisibility(View.GONE);
-//        recyclerView.setVisibility(View.GONE);
-//        progressBar.setVisibility(View.VISIBLE);
-        Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getPopularMovies("9e88cc754362f676e652e8856be5d62d");
-        call.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                MovieResponse response1=response.body();
-                ArrayList<Movies> moviesList = response1.getMovies();
-                if(moviesList != null){
-                    popularmovies.clear();
-                    popularmovies.addAll(moviesList);
-                    adapter.notifyDataSetChanged();
-                    moviesDAO.insertMovieList(moviesList);
-                    for(int i=0;i<moviesList.size();i++){
-                        Movies m= moviesList.get(i);
-                        m.setPopular(true);
-                    }
-                }
-//                recyclerView.setVisibility(View.VISIBLE);
-//                recyclerView1.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
-                    Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
-//                recyclerView.setVisibility(View.VISIBLE);
-//                recyclerView1.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
-            }
-        });
-
-    }
-
 }
