@@ -22,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MoviesFragment.MovieSelectedCallback{
+public class MainActivity extends AppCompatActivity implements MoviesFragment.MovieSelectedCallback, TvFragment.TvShowSelectedCallback{
 
 
     ViewPager viewPager;
@@ -59,5 +59,10 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Mo
         bundle.putString("poster_path",movie.getPoster_path());
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    @Override
+    public void onTvShowSelected(TvShows show) {
+
     }
 }

@@ -19,16 +19,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".MovieProfileActivity" />
         <activity android:name=".ActorProfileActivity" />
         <activity
             android:name=".VideoPlayerActivity"
             android:label="@string/title_activity_video_player"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".TvShowProfileActivity"></activity>
     </application>
 
 </manifest>

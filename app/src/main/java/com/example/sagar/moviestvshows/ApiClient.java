@@ -10,6 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     MovieApi movieApi;
+    TvShowApi tvShowApi;
 
     static ApiClient client;
 
@@ -21,6 +22,8 @@ public class ApiClient {
                 .build();
 
         movieApi = retrofit.create(MovieApi.class);
+
+        tvShowApi= retrofit.create(TvShowApi.class);
     }
 
     public static ApiClient getInstance() {
@@ -29,6 +32,8 @@ public class ApiClient {
         }
         return client;
     }
+
+    public TvShowApi getTvShowApi(){  return tvShowApi; }
 
     public MovieApi getMovieApi() {
         return movieApi;
