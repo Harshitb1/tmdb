@@ -64,5 +64,13 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Mo
     @Override
     public void onTvShowSelected(TvShows show) {
 
+        Intent intent = new Intent(MainActivity.this,MovieProfileActivity.class);
+        Bundle bundle= new Bundle();
+        bundle.putInt("id",show.getId());
+        bundle.putString("name",show.getName());
+        bundle.putString("poster_path",show.getPoster_path());
+        intent.putExtras(bundle);
+        startActivity(intent);
+
     }
 }
