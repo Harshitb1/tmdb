@@ -32,6 +32,14 @@ public class Movies {
     int isUpcoming;
     int isFavourite;
 
+//    public Movies() {
+//        this.isTopRated = 0;
+//        this.isPopular = 0;
+//        this.isNowPlaying = 0;
+//        this.isUpcoming = 0;
+//        this.isFavourite = 0;
+//    }
+
     public int getIsTopRated() {
         return isTopRated;
     }

@@ -31,6 +31,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     int height,width;
     interface OnItemClickListener {
         void onItemClick(int position);
+        void onFavoriteSelected(int position);
     }
 
     public MovieRecyclerAdapter(ArrayList<Movies> movies, Context context, OnItemClickListener listener,WindowManager windowManager) {
@@ -52,6 +53,12 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
         Movies movie= movies.get(position);
         holder.username.setText(movie.getTitle());
+        holder.fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onFavoriteSelected(holder.getAdapterPosition());
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +82,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
 
         TextView username;
         ImageView avatar;
+        ImageView fav;
         View itemView;
 
 
@@ -83,6 +91,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
             this.itemView = itemView;
             username = itemView.findViewById(R.id.username);
             avatar = itemView.findViewById(R.id.avatar);
+            fav= itemView.findViewById(R.id.fav);
             getScreenSize();
         }
     }
