@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Mo
         viewPagerAdapter.addFragment(new TvFragment(),pageTitle[1]);
         viewPagerAdapter.addFragment(new FavoriteFragment(),pageTitle[2]);
         viewPager.setAdapter(viewPagerAdapter);
-        viewPager.setPageTransformer(true,new CubeOutRotationTransformation());
+        viewPager.setPageTransformer(true,new com.eftimoff.viewpagertransformers.RotateUpTransformer());
         tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
