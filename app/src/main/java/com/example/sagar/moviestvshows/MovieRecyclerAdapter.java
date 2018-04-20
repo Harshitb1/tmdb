@@ -56,6 +56,13 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         holder.fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(holder.fav.getDrawable()==context.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp)){
+                    holder.fav.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
+                }
+                else{
+                    holder.fav.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
+
+                }
                 listener.onFavoriteSelected(holder.getAdapterPosition());
             }
         });

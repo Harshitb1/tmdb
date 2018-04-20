@@ -16,20 +16,22 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MoviesFragment.MovieSelectedCallback, TvFragment.TvShowSelectedCallback{
+public class MainActivity extends AppCompatActivity implements MoviesFragment.MovieSelectedCallback, TvFragment.TvShowSelectedCallback, FavoriteFragment.OnFavoriteSelected{
 
 
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
     TabLayout tabLayout;
 
-    private final static String pageTitle[] = {"MOVIES", "TV SHOWS"};
+    private final static String pageTitle[] = {"MOVIES", "TV SHOWS","Favorites"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,9 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Mo
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new MoviesFragment(),pageTitle[0]);
         viewPagerAdapter.addFragment(new TvFragment(),pageTitle[1]);
+        viewPagerAdapter.addFragment(new FavoriteFragment(),pageTitle[2]);
         viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setPageTransformer(true,new CubeOutRotationTransformation());
         tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -64,11 +68,23 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Mo
     @Override
     public void onTvShowSelected(TvShows show) {
 
-        Intent intent = new Intent(MainActivity.this,MovieProfileActivity.class);
+        Intent intent = new Intent(MainActivity.this,TvShowProfileActivity.class);
         Bundle bundle= new Bundle();
         bundle.putInt("id",show.getId());
         bundle.putString("name",show.getName());
         bundle.putString("poster_path",show.getPoster_path());
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void onclick(Favourite favourite) {
+        Intent intent= new Intent(MainActivity.this,MovieProfileActivity.class);
+        Bundle bundle= new Bundle();
+        bundle.putInt("id",favourite.getId());
+        bundle.putString("name",favourite.getName());
+        bundle.putString("poster_path",favourite.getPoster_path());
         intent.putExtras(bundle);
         startActivity(intent);
 

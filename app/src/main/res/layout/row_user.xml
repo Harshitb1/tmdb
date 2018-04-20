@@ -40,9 +40,9 @@
 
         <ImageView
             android:id="@+id/fav"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -50,7 +50,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/username"
             app:layout_constraintTop_toTopOf="@+id/username"
-            app:srcCompat="@drawable/heart" />
+            app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
 
     </android.support.constraint.ConstraintLayout>
