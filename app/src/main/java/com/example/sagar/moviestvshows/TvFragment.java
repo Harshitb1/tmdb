@@ -39,6 +39,7 @@ public class TvFragment extends Fragment {
     ArrayList<TvShows> popular = new ArrayList<>();
     ArrayList<TvShows> toprated = new ArrayList<>();
     TvShowDAO tvShowDAO ;
+    FavoritesDAO favoritesDAO;
     SwipeRefreshLayout swipeRefreshLayout;
     WindowManager windowManager;
     TvFragment.TvShowSelectedCallback mCallback;
@@ -77,7 +78,7 @@ public class TvFragment extends Fragment {
         t1= view.findViewById(R.id.textView3);
         t2=view.findViewById(R.id.textView5);
         windowManager=(WindowManager) getContext().getSystemService(getContext().WINDOW_SERVICE);
-
+        favoritesDAO=TmdbDatabase.getInstance(getContext()).getFavoritesDAO();
         tvShowDAO=TmdbDatabase.getInstance(getContext()).getTvShowDAO();
         airingtoday=(ArrayList<TvShows>) tvShowDAO.getAiringToday();
         popular=(ArrayList<TvShows>) tvShowDAO.getPopular();
@@ -90,6 +91,25 @@ public class TvFragment extends Fragment {
                 TvShows show= popular.get(position);
                 mCallback.onTvShowSelected(show);
             }
+
+            @Override
+            public void onFavoriteSelected(int position) {
+                TvShows show= popular.get(position);
+                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),0);
+                int x=show.getFavourite();
+                if(x==0){
+                    Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
+                    show.setFavourite(1);
+                    favoritesDAO.insertFavourite(favourite);
+                }
+                if(x==1){
+                    Toast.makeText(getContext(),"removed from favorites",Toast.LENGTH_SHORT).show();
+                    show.setFavourite(0);
+                    favoritesDAO.deleteFavourite(favourite);
+                }
+                tvShowDAO.insertTvShow(show);
+            }
+
         },windowManager);
 
         adapter1= new TvShowRecyclerAdapter(toprated, getContext(), new TvShowRecyclerAdapter.OnItemClickListener() {
@@ -97,6 +117,24 @@ public class TvFragment extends Fragment {
             public void onItemClick(int position) {
                 TvShows show= toprated.get(position);
                 mCallback.onTvShowSelected(show);
+            }
+
+            @Override
+            public void onFavoriteSelected(int position) {
+                TvShows show= toprated.get(position);
+                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),0);
+                int x=show.getFavourite();
+                if(x==0){
+                    Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
+                    show.setFavourite(1);
+                    favoritesDAO.insertFavourite(favourite);
+                }
+                if(x==1){
+                    Toast.makeText(getContext(),"removed from favorites",Toast.LENGTH_SHORT).show();
+                    show.setFavourite(0);
+                    favoritesDAO.deleteFavourite(favourite);
+                }
+                tvShowDAO.insertTvShow(show);
             }
         },windowManager);
 
@@ -107,6 +145,24 @@ public class TvFragment extends Fragment {
                 TvShows show= ontheair.get(position);
                 mCallback.onTvShowSelected(show);
             }
+
+            @Override
+            public void onFavoriteSelected(int position) {
+                TvShows show= ontheair.get(position);
+                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),0);
+                int x=show.getFavourite();
+                if(x==0){
+                    Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
+                    show.setFavourite(1);
+                    favoritesDAO.insertFavourite(favourite);
+                }
+                if(x==1){
+                    Toast.makeText(getContext(),"removed from favorites",Toast.LENGTH_SHORT).show();
+                    show.setFavourite(0);
+                    favoritesDAO.deleteFavourite(favourite);
+                }
+                tvShowDAO.insertTvShow(show);
+            }
         },windowManager);
 
         t2.setText("Airing Today");
@@ -115,6 +171,24 @@ public class TvFragment extends Fragment {
             public void onItemClick(int position) {
                 TvShows show= airingtoday.get(position);
                 mCallback.onTvShowSelected(show);
+            }
+
+            @Override
+            public void onFavoriteSelected(int position) {
+                TvShows show= airingtoday.get(position);
+                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),0);
+                int x=show.getFavourite();
+                if(x==0){
+                    Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
+                    show.setFavourite(1);
+                    favoritesDAO.insertFavourite(favourite);
+                }
+                if(x==1){
+                    Toast.makeText(getContext(),"removed from favorites",Toast.LENGTH_SHORT).show();
+                    show.setFavourite(0);
+                    favoritesDAO.deleteFavourite(favourite);
+                }
+                tvShowDAO.insertTvShow(show);
             }
         },windowManager);
 

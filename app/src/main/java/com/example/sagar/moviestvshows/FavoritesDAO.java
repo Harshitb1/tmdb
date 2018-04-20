@@ -29,4 +29,7 @@ public interface FavoritesDAO {
 
     @Query("Select * from Favourite")
     List<Favourite> getAllFavorites();
+
+    @Query("Select * from Favourite where ismovie=1 and id=:t")
+    Favourite checkMovie(int t);
 }

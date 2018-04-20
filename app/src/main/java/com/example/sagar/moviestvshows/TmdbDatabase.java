@@ -9,7 +9,7 @@ import android.content.Context;
  * Created by SAGAR on 10-04-2018.
  */
 
-@Database(entities = {Movies.class,TvShows.class,Favourite.class},version = 2,exportSchema = false)
+@Database(entities = {Movies.class,TvShows.class,Favourite.class},version = 1,exportSchema = false)
 public abstract class TmdbDatabase extends RoomDatabase{
 
     private static TmdbDatabase INSTANCE;

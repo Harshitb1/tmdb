@@ -29,6 +29,7 @@ public class MovieRecyclerAdapter2  extends RecyclerView.Adapter<MovieRecyclerAd
     int height,width;
     interface OnItemClickListener {
         void onItemClick(int position);
+        void onFavoriteSelected(int position);
     }
 
     public MovieRecyclerAdapter2(ArrayList<Movies> movies, Context context, MovieRecyclerAdapter2.OnItemClickListener listener) {
@@ -50,6 +51,19 @@ public class MovieRecyclerAdapter2  extends RecyclerView.Adapter<MovieRecyclerAd
     public void onBindViewHolder(final MovieRecyclerAdapter2.MovieViewHolder holder, int position) {
         Movies movie= movies.get(position);
        // holder.username.setText(movie.getTitle());
+        holder.fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.fav.getDrawable()==context.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp)){
+                    holder.fav.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
+                }
+                else{
+                    holder.fav.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
+
+                }
+                listener.onFavoriteSelected(holder.getAdapterPosition());
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,13 +87,15 @@ public class MovieRecyclerAdapter2  extends RecyclerView.Adapter<MovieRecyclerAd
         TextView username;
         ImageView avatar;
         View itemView;
-
+        ImageView fav;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
+
            // username = itemView.findViewById(R.id.username);
             avatar = itemView.findViewById(R.id.avatar);
+            fav= itemView.findViewById(R.id.fav);
            // getScreenSize();
         }
     }

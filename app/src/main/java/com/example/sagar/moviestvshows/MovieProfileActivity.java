@@ -37,6 +37,8 @@ public class MovieProfileActivity extends AppCompatActivity {
     MovieRecyclerAdapter2 adapter1;
     RecyclerView recyclerView, recyclerView1, recyclerView2;
     MovieTrailerAdapter movieTrailerAdapter;
+    MoviesDAO moviesDAO;
+    FavoritesDAO favoritesDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,8 @@ public class MovieProfileActivity extends AppCompatActivity {
         bundle = intent.getExtras();
         casts = new ArrayList<Cast>();
         similarmovies = new ArrayList<>();
+        favoritesDAO=  TmdbDatabase.getInstance(this).getFavoritesDAO();
+        moviesDAO= TmdbDatabase.getInstance(this).getMoviesDao();
 
         if (bundle != null) {
             int id = bundle.getInt("id");
@@ -101,6 +105,25 @@ public class MovieProfileActivity extends AppCompatActivity {
                 bundle.putString("poster_path", movie.getPoster_path());
                 intent.putExtras(bundle);
                 startActivity(intent);
+            }
+
+            @Override
+            public void onFavoriteSelected(int position) {
+                Movies movie= similarmovies.get(position);
+                int x=movie.getIsFavourite();
+                Favourite favourite = new Favourite(movie.getId(),movie.getTitle(),movie.getPoster_path(),1);
+                if(x==0){
+                    Toast.makeText(MovieProfileActivity.this,"added to favorites",Toast.LENGTH_SHORT).show();
+                    movie.setIsFavourite(1);
+                    favoritesDAO.insertFavourite(favourite);
+                }
+                if(x==1){
+                    Toast.makeText(MovieProfileActivity.this,"removed from favorites",Toast.LENGTH_SHORT).show();
+                    movie.setIsFavourite(0);
+                    favoritesDAO.deleteFavourite(favourite);
+                }
+                moviesDAO.insertMovie(movie);
+
             }
         });
         recyclerView1.setAdapter(adapter1);

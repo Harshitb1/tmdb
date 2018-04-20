@@ -89,7 +89,7 @@ public class MoviesFragment extends Fragment {
             @Override
             public void onFavoriteSelected(int position) {
                 Movies movie= popularmovies.get(position);
-                Favourite favourite = new Favourite(movie.getId(),movie.getTitle(),movie.getPoster_path());
+                Favourite favourite = new Favourite(movie.getId(),movie.getTitle(),movie.getPoster_path(),1);
                 int x=movie.getIsFavourite();
                 if(x==0){
                     Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
@@ -115,9 +115,9 @@ public class MoviesFragment extends Fragment {
         adapter1= new MovieRecyclerAdapter(topratedmovies, getContext(), new MovieRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onFavoriteSelected(int position) {
-                Movies movie= popularmovies.get(position);
+                Movies movie= topratedmovies.get(position);
                 int x=movie.getIsFavourite();
-                Favourite favourite = new Favourite(movie.getId(),movie.getTitle(),movie.getPoster_path());
+                Favourite favourite = new Favourite(movie.getId(),movie.getTitle(),movie.getPoster_path(),1);
                 if(x==0){
                     Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
                     movie.setIsFavourite(1);
@@ -141,9 +141,9 @@ public class MoviesFragment extends Fragment {
         adapter2= new MovieRecyclerAdapter(nowplayingmovies, getContext(), new MovieRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onFavoriteSelected(int position) {
-                Movies movie= popularmovies.get(position);
+                Movies movie= nowplayingmovies.get(position);
                 int x=movie.getIsFavourite();
-                Favourite favourite = new Favourite(movie.getId(),movie.getTitle(),movie.getPoster_path());
+                Favourite favourite = new Favourite(movie.getId(),movie.getTitle(),movie.getPoster_path(),1);
                 if(x==0){
                     Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
                     movie.setIsFavourite(1);
@@ -167,9 +167,9 @@ public class MoviesFragment extends Fragment {
         adapter3= new MovieRecyclerAdapter(upcomingmovies, getContext(), new MovieRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onFavoriteSelected(int position) {
-                Movies movie= popularmovies.get(position);
+                Movies movie= upcomingmovies.get(position);
                 int x=movie.getIsFavourite();
-                Favourite favourite = new Favourite(movie.getId(),movie.getTitle(),movie.getPoster_path());
+                Favourite favourite = new Favourite(movie.getId(),movie.getTitle(),movie.getPoster_path(),1);
                 if(x==0){
                     Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
                     movie.setIsFavourite(1);
@@ -256,6 +256,10 @@ public class MoviesFragment extends Fragment {
                     for(int i=0;i<moviesList.size();i++){
                         Movies m= moviesList.get(i);
                         m.setIsUpcoming(1);
+                        Favourite f=favoritesDAO.checkMovie(m.id);
+                        if(f!=null){
+                            m.setIsFavourite(1);
+                        }
                     }
                     upcomingmovies.addAll(moviesList);
                     adapter3.notifyDataSetChanged();
@@ -300,6 +304,10 @@ public class MoviesFragment extends Fragment {
                     for(int i=0;i<moviesList.size();i++){
                         Movies m= moviesList.get(i);
                         m.setIsNowPlaying(1);
+                        Favourite f=favoritesDAO.checkMovie(m.id);
+                        if(f!=null){
+                            m.setIsFavourite(1);
+                        }
                     }
                     nowplayingmovies.addAll(moviesList);
                     adapter2.notifyDataSetChanged();
@@ -339,6 +347,10 @@ public class MoviesFragment extends Fragment {
                     for(int i=0;i<moviesList.size();i++){
                         Movies m= moviesList.get(i);
                         m.setIsTopRated(1);
+                        Favourite f=favoritesDAO.checkMovie(m.id);
+                        if(f!=null){
+                            m.setIsFavourite(1);
+                        }
                     }
                     topratedmovies.addAll(moviesList);
                     adapter1.notifyDataSetChanged();
@@ -377,6 +389,10 @@ public class MoviesFragment extends Fragment {
                     for(int i=0;i<moviesList.size();i++){
                         Movies m= moviesList.get(i);
                         m.setIsPopular(1);
+                        Favourite f=favoritesDAO.checkMovie(m.id);
+                        if(f!=null){
+                            m.setIsFavourite(1);
+                        }
                     }
                     popularmovies.addAll(moviesList);
                     adapter.notifyDataSetChanged();

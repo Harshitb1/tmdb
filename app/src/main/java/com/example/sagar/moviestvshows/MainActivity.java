@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
+//import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
 
 import java.util.ArrayList;
 

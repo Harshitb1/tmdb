@@ -13,6 +13,15 @@ public class Favourite {
     int id;
     String name;
     String poster_path;
+    int ismovie;
+
+    public int getIsmovie() {
+        return ismovie;
+    }
+
+    public void setIsmovie(int ismovie) {
+        this.ismovie = ismovie;
+    }
 
     public int getId() {
         return id;
@@ -38,9 +47,10 @@ public class Favourite {
         this.poster_path = poster_path;
     }
 
-    public Favourite(int id, String name, String poster_path) {
+    public Favourite(int id, String name, String poster_path, int ismovie) {
         this.id = id;
         this.name = name;
         this.poster_path = poster_path;
+        this.ismovie=ismovie;
     }
 }
