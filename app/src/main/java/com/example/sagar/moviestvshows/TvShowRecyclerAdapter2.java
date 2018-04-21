@@ -27,6 +27,7 @@ public class TvShowRecyclerAdapter2 extends RecyclerView.Adapter<TvShowRecyclerA
 
     interface OnItemClickListener {
         void onItemClick(int position);
+        void onFavoriteSelected(int position);
     }
 
     public TvShowRecyclerAdapter2(ArrayList<TvShows> tvShowslist, Context context, TvShowRecyclerAdapter2.OnItemClickListener listener) {
@@ -48,6 +49,12 @@ public class TvShowRecyclerAdapter2 extends RecyclerView.Adapter<TvShowRecyclerA
     public void onBindViewHolder(final TvShowRecyclerAdapter2.TvShowViewHolder holder, int position) {
         TvShows show= tvShowslist.get(position);
         holder.username.setText(show.getName());
+        holder.fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onFavoriteSelected(holder.getAdapterPosition());
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,12 +81,14 @@ public class TvShowRecyclerAdapter2 extends RecyclerView.Adapter<TvShowRecyclerA
         TextView username;
         ImageView avatar;
         View itemView;
+        ImageView fav;
 
         public TvShowViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             username = itemView.findViewById(R.id.username);
             avatar = itemView.findViewById(R.id.avatar);
+            fav= itemView.findViewById(R.id.fav);
 
         }
 

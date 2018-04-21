@@ -80,7 +80,13 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Mo
 
     @Override
     public void onclick(Favourite favourite) {
-        Intent intent= new Intent(MainActivity.this,MovieProfileActivity.class);
+        Intent intent;
+        if(favourite.getIsmovie()==1) {
+            intent = new Intent(MainActivity.this, MovieProfileActivity.class);
+        }
+        else{
+            intent = new Intent(MainActivity.this, TvShowProfileActivity.class);
+        }
         Bundle bundle= new Bundle();
         bundle.putInt("id",favourite.getId());
         bundle.putString("name",favourite.getName());

@@ -159,6 +159,7 @@ public class MovieProfileActivity extends AppCompatActivity {
                 ArrayList<MovieVideoResponse.Trailer> list = response1.getTrailers();
                 if (list != null) {
                     trailers.clear();
+
                     trailers.addAll(list);
                     movieTrailerAdapter.notifyDataSetChanged();
                 }
@@ -182,6 +183,14 @@ public class MovieProfileActivity extends AppCompatActivity {
                 ArrayList<Movies> moviesList = response1.getMovies();
                 if (moviesList != null) {
                     similarmovies.clear();
+                    for(int i=0;i<moviesList.size();i++){
+                        Movies m= moviesList.get(i);
+                        Favourite f=favoritesDAO.checkMovie(m.id);
+                        if(f!=null){
+                            m.setIsFavourite(1);
+                            moviesDAO.insertMovie(m);
+                        }
+                    }
                     similarmovies.addAll(moviesList);
                     adapter1.notifyDataSetChanged();
                 }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class MoviesFragment extends Fragment {
     ArrayList<Movies> topratedmovies = new ArrayList<>();
     ArrayList<Movies> nowplayingmovies = new ArrayList<>();
     ArrayList<Movies> upcomingmovies = new ArrayList<>();
+    TextView t1,t2,t3,t4;
     MoviesDAO moviesDAO;
     FavoritesDAO favoritesDAO;
     WindowManager windowManager;
@@ -75,6 +77,10 @@ public class MoviesFragment extends Fragment {
         recyclerView2= view.findViewById(R.id.rvNowPlaying);
         recyclerView3 = view.findViewById(R.id.rvUpcomingMovies);
         progressBar = view.findViewById(R.id.progressBar);
+        t1=view.findViewById(R.id.textView);
+        t2=view.findViewById(R.id.textView2);
+        t3=view.findViewById(R.id.textView3);
+        t4=view.findViewById(R.id.textView5);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         favoritesDAO=  TmdbDatabase.getInstance(getContext()).getFavoritesDAO();
         moviesDAO= TmdbDatabase.getInstance(getContext()).getMoviesDao();
@@ -84,6 +90,7 @@ public class MoviesFragment extends Fragment {
         nowplayingmovies= (ArrayList<Movies>)moviesDAO.getNowPlayingMovies();
 
         windowManager=(WindowManager) getContext().getSystemService(getContext().WINDOW_SERVICE);
+
 
         adapter= new MovieRecyclerAdapter(popularmovies, getContext(), new MovieRecyclerAdapter.OnItemClickListener() {
             @Override
@@ -205,6 +212,7 @@ public class MoviesFragment extends Fragment {
             }
         });
 
+
         fetchPopularMovies();
 
         recyclerView.setAdapter(adapter);
@@ -233,6 +241,7 @@ public class MoviesFragment extends Fragment {
         recyclerView3.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         recyclerView3.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         recyclerView3.setItemAnimator(new DefaultItemAnimator());
+
         return view;
     }
 
@@ -266,21 +275,29 @@ public class MoviesFragment extends Fragment {
                     moviesDAO.insertMovieList(moviesList);
 
                 }
-//                recyclerView1.setVisibility(View.VISIBLE);
-//                recyclerView3.setVisibility(View.VISIBLE);
-//                recyclerView.setVisibility(View.VISIBLE);
-//                recyclerView2.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
+                recyclerView1.setVisibility(View.VISIBLE);
+                recyclerView3.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerView2.setVisibility(View.VISIBLE);
+                t1.setVisibility(View.VISIBLE);
+                t2.setVisibility(View.VISIBLE);
+                t3.setVisibility(View.VISIBLE);
+                t4.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Toast.makeText(getContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
-//                recyclerView1.setVisibility(View.VISIBLE);
-//                recyclerView.setVisibility(View.VISIBLE);
-//                recyclerView2.setVisibility(View.VISIBLE);
-//                recyclerView3.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
+                recyclerView1.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerView2.setVisibility(View.VISIBLE);
+                recyclerView3.setVisibility(View.VISIBLE);
+                t1.setVisibility(View.VISIBLE);
+                t2.setVisibility(View.VISIBLE);
+                t3.setVisibility(View.VISIBLE);
+                t4.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
 
         });
@@ -377,6 +394,15 @@ public class MoviesFragment extends Fragment {
 //        recyclerView1.setVisibility(View.GONE);
 //        recyclerView.setVisibility(View.GONE);
 //        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        recyclerView1.setVisibility(View.GONE);
+        recyclerView2.setVisibility(View.GONE);
+        recyclerView3.setVisibility(View.GONE);
+        t1.setVisibility(View.GONE);
+        t2.setVisibility(View.GONE);
+        t3.setVisibility(View.GONE);
+        t4.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         Call<MovieResponse> call= ApiClient.getInstance().getMovieApi().getPopularMovies("9e88cc754362f676e652e8856be5d62d");
         call.enqueue(new Callback<MovieResponse>() {
             @Override
@@ -384,20 +410,6 @@ public class MoviesFragment extends Fragment {
                 MovieResponse response1=response.body();
                 ArrayList<Movies> moviesList = response1.getMovies();
                 if(moviesList != null){
-                    popularmovies.clear();
-
-                    for(int i=0;i<moviesList.size();i++){
-                        Movies m= moviesList.get(i);
-                        m.setIsPopular(1);
-                        Favourite f=favoritesDAO.checkMovie(m.id);
-                        if(f!=null){
-                            m.setIsFavourite(1);
-                        }
-                    }
-                    popularmovies.addAll(moviesList);
-                    adapter.notifyDataSetChanged();
-                    moviesDAO.insertMovieList(moviesList);
-
                 }
 //                recyclerView.setVisibility(View.VISIBLE);
 //                recyclerView1.setVisibility(View.VISIBLE);

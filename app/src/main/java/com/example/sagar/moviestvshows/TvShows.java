@@ -164,4 +164,8 @@ public class TvShows {
     public void setOriginal_name(String original_name) {
         this.original_name = original_name;
     }
+
+    public int getIsFavourite() {
+        return favourite;
+    }
 }

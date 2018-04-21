@@ -49,6 +49,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
 
         Favourite movie= movies.get(position);
         // holder.username.setText(movie.getTitle());
+        holder.fav.setVisibility(View.GONE);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,12 +72,14 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
 
         TextView username;
         ImageView avatar;
+        ImageView fav;
         View itemView;
 
 
         public FavoritesViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
+            fav= itemView.findViewById(R.id.fav);
             // username = itemView.findViewById(R.id.username);
             avatar = itemView.findViewById(R.id.avatar);
             // getScreenSize();

@@ -52,10 +52,21 @@ public class TvShowRecyclerAdapter extends RecyclerView.Adapter<TvShowRecyclerAd
     public void onBindViewHolder(final TvShowRecyclerAdapter.TvShowViewHolder holder, int position) {
         TvShows show= tvShowslist.get(position);
         holder.username.setText(show.getName());
+        if(show.getIsFavourite()==1){
+            holder.fav.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
+        }
         holder.fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(holder.fav.getDrawable().getConstantState()==context.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp).getConstantState()){
+                    holder.fav.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
+                }
+                else{
+                    holder.fav.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
+
+                }
                 listener.onFavoriteSelected(holder.getAdapterPosition());
+
             }
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {

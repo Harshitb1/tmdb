@@ -32,4 +32,7 @@ public interface FavoritesDAO {
 
     @Query("Select * from Favourite where ismovie=1 and id=:t")
     Favourite checkMovie(int t);
+
+    @Query("Select * from Favourite where ismovie=2 and id=:t")
+    Favourite checkTvShow(int t);
 }

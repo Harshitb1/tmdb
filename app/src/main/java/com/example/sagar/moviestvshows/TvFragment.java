@@ -43,7 +43,7 @@ public class TvFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     WindowManager windowManager;
     TvFragment.TvShowSelectedCallback mCallback;
-    TextView t1,t2;
+    TextView t1,t2,t3,t4;
 
     public  interface TvShowSelectedCallback{
         void onTvShowSelected(TvShows show);
@@ -77,6 +77,8 @@ public class TvFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         t1= view.findViewById(R.id.textView3);
         t2=view.findViewById(R.id.textView5);
+        t3= view.findViewById(R.id.textView2);
+        t4= view.findViewById(R.id.textView);
         windowManager=(WindowManager) getContext().getSystemService(getContext().WINDOW_SERVICE);
         favoritesDAO=TmdbDatabase.getInstance(getContext()).getFavoritesDAO();
         tvShowDAO=TmdbDatabase.getInstance(getContext()).getTvShowDAO();
@@ -95,7 +97,7 @@ public class TvFragment extends Fragment {
             @Override
             public void onFavoriteSelected(int position) {
                 TvShows show= popular.get(position);
-                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),0);
+                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),2);
                 int x=show.getFavourite();
                 if(x==0){
                     Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
@@ -122,7 +124,7 @@ public class TvFragment extends Fragment {
             @Override
             public void onFavoriteSelected(int position) {
                 TvShows show= toprated.get(position);
-                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),0);
+                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),2);
                 int x=show.getFavourite();
                 if(x==0){
                     Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
@@ -149,7 +151,7 @@ public class TvFragment extends Fragment {
             @Override
             public void onFavoriteSelected(int position) {
                 TvShows show= ontheair.get(position);
-                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),0);
+                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),2);
                 int x=show.getFavourite();
                 if(x==0){
                     Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
@@ -176,7 +178,7 @@ public class TvFragment extends Fragment {
             @Override
             public void onFavoriteSelected(int position) {
                 TvShows show= airingtoday.get(position);
-                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),0);
+                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),2);
                 int x=show.getFavourite();
                 if(x==0){
                     Toast.makeText(getContext(),"added to favorites",Toast.LENGTH_SHORT).show();
@@ -250,7 +252,12 @@ public class TvFragment extends Fragment {
                     for(int i=0;i<moviesList.size();i++){
                         TvShows m= moviesList.get(i);
                         m.setAiring_today(1);
+                        Favourite f=favoritesDAO.checkTvShow(m.id);
+                        if(f!=null){
+                            m.setFavourite(1);
+                        }
                     }
+
                     airingtoday.addAll(moviesList);
                     adapter3.notifyDataSetChanged();
                     tvShowDAO.insertTvShowList(airingtoday);
@@ -260,11 +267,29 @@ public class TvFragment extends Fragment {
 //                recyclerView1.setVisibility(View.VISIBLE);
 //                recyclerView.setVisibility(View.VISIBLE);
 //                progressBar.setVisibility(View.GONE);
+                recyclerView1.setVisibility(View.VISIBLE);
+                recyclerView3.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerView2.setVisibility(View.VISIBLE);
+                t1.setVisibility(View.VISIBLE);
+                t2.setVisibility(View.VISIBLE);
+                t3.setVisibility(View.VISIBLE);
+                t4.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<TvShowResponse> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                recyclerView1.setVisibility(View.VISIBLE);
+                recyclerView3.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerView2.setVisibility(View.VISIBLE);
+                t1.setVisibility(View.VISIBLE);
+                t2.setVisibility(View.VISIBLE);
+                t3.setVisibility(View.VISIBLE);
+                t4.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
 //                recyclerView1.setVisibility(View.VISIBLE);
 //                recyclerView.setVisibility(View.VISIBLE);
 //                progressBar.setVisibility(View.GONE);
@@ -287,6 +312,10 @@ public class TvFragment extends Fragment {
                     for(int i=0;i<moviesList.size();i++){
                         TvShows m= moviesList.get(i);
                         m.setOn_the_air(1);
+                        Favourite f=favoritesDAO.checkTvShow(m.id);
+                        if(f!=null){
+                            m.setFavourite(1);
+                        }
                     }
                     ontheair.addAll(moviesList);
                     adapter2.notifyDataSetChanged();
@@ -325,6 +354,10 @@ public class TvFragment extends Fragment {
                     for(int i=0;i<moviesList.size();i++){
                         TvShows m= moviesList.get(i);
                         m.setTopRated(1);
+                        Favourite f=favoritesDAO.checkTvShow(m.id);
+                        if(f!=null){
+                            m.setFavourite(1);
+                        }
                     }
                     toprated.addAll(moviesList);
                     adapter1.notifyDataSetChanged();
@@ -354,6 +387,15 @@ public class TvFragment extends Fragment {
         //        recyclerView1.setVisibility(View.GONE);
 //        recyclerView.setVisibility(View.GONE);
 //        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        recyclerView1.setVisibility(View.GONE);
+        recyclerView2.setVisibility(View.GONE);
+        recyclerView3.setVisibility(View.GONE);
+        t1.setVisibility(View.GONE);
+        t2.setVisibility(View.GONE);
+        t3.setVisibility(View.GONE);
+        t4.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         Call<TvShowResponse> call= ApiClient.getInstance().getTvShowApi().getPopular("9e88cc754362f676e652e8856be5d62d");
         call.enqueue(new Callback<TvShowResponse>() {
             @Override
@@ -367,6 +409,10 @@ public class TvFragment extends Fragment {
                     for(int i=0;i<moviesList.size();i++){
                         TvShows m= moviesList.get(i);
                         m.setPopular(1);
+                        Favourite f=favoritesDAO.checkTvShow(m.id);
+                        if(f!=null){
+                            m.setFavourite(1);
+                        }
                     }
                     popular.addAll(moviesList);
                     adapter.notifyDataSetChanged();

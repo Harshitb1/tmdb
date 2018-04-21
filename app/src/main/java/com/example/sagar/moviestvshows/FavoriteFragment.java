@@ -32,6 +32,13 @@ public class FavoriteFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
@@ -54,7 +61,8 @@ public class FavoriteFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_favorite, container, false);
         favoritesDAO=  TmdbDatabase.getInstance(getContext()).getFavoritesDAO();
-        favourites=(ArrayList<Favourite>)favoritesDAO.getAllFavorites();
+        favourites.clear();
+        favourites.addAll((ArrayList<Favourite>)favoritesDAO.getAllFavorites());
         recyclerView= view.findViewById(R.id.favorites);
 
         adapter= new FavoritesRecyclerAdapter(favourites, getContext(), new FavoritesRecyclerAdapter.OnItemClickListener() {
@@ -64,7 +72,9 @@ public class FavoriteFragment extends Fragment {
             }
         });
 
+
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3,GridLayoutManager.VERTICAL,false));//LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         //recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());

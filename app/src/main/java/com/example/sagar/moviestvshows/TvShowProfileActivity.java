@@ -37,6 +37,8 @@ public class TvShowProfileActivity extends AppCompatActivity {
     TvShowRecyclerAdapter2 adapter1;
     RecyclerView recyclerView, recyclerView1, recyclerView2;
     MovieTrailerAdapter movieTrailerAdapter;
+    FavoritesDAO favoritesDAO;
+    TvShowDAO tvShowDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class TvShowProfileActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvCast);
         recyclerView1 = findViewById(R.id.rvSimilarMovies);
         recyclerView2 = findViewById(R.id.rvTrailers);
+        favoritesDAO=TmdbDatabase.getInstance(this).getFavoritesDAO();
+        tvShowDAO=TmdbDatabase.getInstance(this).getTvShowDAO();
         final Intent intent = getIntent();
         bundle = intent.getExtras();
         casts = new ArrayList<Cast>();
@@ -105,6 +109,24 @@ public class TvShowProfileActivity extends AppCompatActivity {
                 bundle.putString("poster_path", show.getPoster_path());
                 intent.putExtras(bundle);
                 startActivity(intent);
+            }
+
+            @Override
+            public void onFavoriteSelected(int position) {
+                TvShows show= similar.get(position);
+                Favourite favourite = new Favourite(show.getId(),show.getName(),show.getPoster_path(),2);
+                int x=show.getFavourite();
+                if(x==0){
+                    Toast.makeText(TvShowProfileActivity.this,"added to favorites",Toast.LENGTH_SHORT).show();
+                    show.setFavourite(1);
+                    favoritesDAO.insertFavourite(favourite);
+                }
+                if(x==1){
+                    Toast.makeText(TvShowProfileActivity.this,"removed from favorites",Toast.LENGTH_SHORT).show();
+                    show.setFavourite(0);
+                    favoritesDAO.deleteFavourite(favourite);
+                }
+                tvShowDAO.insertTvShow(show);
             }
         });
         recyclerView1.setAdapter(adapter1);
@@ -165,6 +187,14 @@ public class TvShowProfileActivity extends AppCompatActivity {
                 ArrayList<TvShows> moviesList = response1.getResults();
                 if (moviesList != null) {
                     similar.clear();
+                    for(int i=0;i<moviesList.size();i++){
+                        TvShows m= moviesList.get(i);
+                        Favourite f=favoritesDAO.checkMovie(m.id);
+                        if(f!=null){
+                            m.setFavourite(1);
+                            tvShowDAO.insertTvShow(m);
+                        }
+                    }
                     similar.addAll(moviesList);
                     adapter1.notifyDataSetChanged();
                 }
@@ -194,7 +224,7 @@ public class TvShowProfileActivity extends AppCompatActivity {
 
                     adapter.notifyDataSetChanged();
                 }
-                Log.d("abab", casts.get(0).getName());
+               // Log.d("abab", casts.get(0).getName());
 
             }
 
