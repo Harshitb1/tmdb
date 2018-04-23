@@ -28,6 +28,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
     int height,width;
     interface OnItemClickListener {
         void onItemClick(int position);
+        void onFavoriteClick( int position);
     }
 
     public FavoritesRecyclerAdapter(ArrayList<Favourite> movies, Context context, FavoritesRecyclerAdapter.OnItemClickListener listener) {
@@ -49,7 +50,13 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
 
         Favourite movie= movies.get(position);
         // holder.username.setText(movie.getTitle());
-        holder.fav.setVisibility(View.GONE);
+//        holder.fav.setVisibility(View.GONE);
+        holder.fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onFavoriteClick(holder.getAdapterPosition());
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

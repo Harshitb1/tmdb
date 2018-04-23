@@ -21,6 +21,9 @@ public interface TvShowDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTvShowList(ArrayList<TvShows> showList);
 
+    @Query("Select * from TvShows Where id = :t")
+    TvShows getParticularTvShow(int t);
+
     @Query("Select * from TvShows Where airing_today = 1")
     List<TvShows> getAiringToday();
 

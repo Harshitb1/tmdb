@@ -29,6 +29,9 @@ public interface MoviesDAO {
     @Update
     void UpdateMovie(Movies movie);
 
+    @Query("Select * from Movies Where id = :t")
+    Movies getParticularMovie(int t);
+
     @Query("Select * from Movies Where isPopular = 1")
     List<Movies> getPopularMovies();
 
