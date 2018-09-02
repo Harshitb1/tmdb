@@ -58,26 +58,8 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Mo
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.cardview_dark_background));
 
-    }
 
-//    private FragmentManager.OnBackStackChangedListener getListener() {
-//
-//        FragmentManager.OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
-//            public void onBackStackChanged() {
-//                FragmentManager manager = getSupportFragmentManager();
-//                if (manager != null) {
-//                    int backStackEntryCount = manager.getBackStackEntryCount();
-//                    if (backStackEntryCount == 0) {
-//                        finish();
-//                    }
-//                    Fragment fragment = manager.getFragments()
-//                            .get(backStackEntryCount - 1);
-//                    fragment.onResume();
-//                }
-//            }
-//        };
-//        return result;
-//    }
+    }
 
 
     @Override

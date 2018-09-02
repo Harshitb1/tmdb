@@ -68,6 +68,16 @@ public class FavoriteFragment extends Fragment {
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            favourites.clear();
+            favourites.addAll(favoritesDAO.getAllFavorites());
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     public FavoriteFragment() {
         // Required empty public constructor
     }
