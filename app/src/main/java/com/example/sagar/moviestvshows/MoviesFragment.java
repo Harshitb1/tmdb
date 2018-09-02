@@ -108,6 +108,10 @@ public class MoviesFragment extends Fragment {
                     movie.setIsFavourite(0);
                     favoritesDAO.deleteFavourite(favourite);
                 }
+                adapter.notifyDataSetChanged();
+                adapter1.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
+                adapter3.notifyDataSetChanged();
                 moviesDAO.insertMovie(movie);
             }
 
@@ -135,6 +139,10 @@ public class MoviesFragment extends Fragment {
                     movie.setIsFavourite(0);
                     favoritesDAO.deleteFavourite(favourite);
                 }
+                adapter.notifyDataSetChanged();
+                adapter1.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
+                adapter3.notifyDataSetChanged();
                 moviesDAO.insertMovie(movie);
             }
             @Override
@@ -161,6 +169,10 @@ public class MoviesFragment extends Fragment {
                     movie.setIsFavourite(0);
                     favoritesDAO.deleteFavourite(favourite);
                 }
+                adapter.notifyDataSetChanged();
+                adapter1.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
+                adapter3.notifyDataSetChanged();
                 moviesDAO.insertMovie(movie);
             }
             @Override
@@ -187,6 +199,10 @@ public class MoviesFragment extends Fragment {
                     movie.setIsFavourite(0);
                     favoritesDAO.deleteFavourite(favourite);
                 }
+                adapter.notifyDataSetChanged();
+                adapter1.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
+                adapter3.notifyDataSetChanged();
                 moviesDAO.insertMovie(movie);
             }
             @Override

@@ -109,6 +109,10 @@ public class TvFragment extends Fragment {
                     show.setFavourite(0);
                     favoritesDAO.deleteFavourite(favourite);
                 }
+                adapter.notifyDataSetChanged();
+                adapter1.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
+                adapter3.notifyDataSetChanged();
                 tvShowDAO.insertTvShow(show);
             }
 
@@ -136,6 +140,10 @@ public class TvFragment extends Fragment {
                     show.setFavourite(0);
                     favoritesDAO.deleteFavourite(favourite);
                 }
+                adapter.notifyDataSetChanged();
+                adapter1.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
+                adapter3.notifyDataSetChanged();
                 tvShowDAO.insertTvShow(show);
             }
         },windowManager);
@@ -163,6 +171,10 @@ public class TvFragment extends Fragment {
                     show.setFavourite(0);
                     favoritesDAO.deleteFavourite(favourite);
                 }
+                adapter.notifyDataSetChanged();
+                adapter1.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
+                adapter3.notifyDataSetChanged();
                 tvShowDAO.insertTvShow(show);
             }
         },windowManager);
@@ -190,6 +202,10 @@ public class TvFragment extends Fragment {
                     show.setFavourite(0);
                     favoritesDAO.deleteFavourite(favourite);
                 }
+                adapter.notifyDataSetChanged();
+                adapter1.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
+                adapter3.notifyDataSetChanged();
                 tvShowDAO.insertTvShow(show);
             }
         },windowManager);

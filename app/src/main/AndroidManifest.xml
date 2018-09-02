@@ -30,7 +30,11 @@
         <activity
             android:name=".MovieProfActivity"
             android:label="@string/title_activity_movie_prof"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Splash">
+
+        </activity>
+        <activity android:name=".SplashActivity"></activity>
     </application>
 
 </manifest>

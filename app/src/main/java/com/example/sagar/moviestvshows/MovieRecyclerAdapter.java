@@ -49,11 +49,11 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         return holder;
     }
 
+
     @Override
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
         Movies movie= movies.get(position);
         holder.username.setText(movie.getTitle());
-
         if(movie.getIsFavourite()==1){
             holder.fav.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
         }

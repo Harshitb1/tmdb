@@ -2,6 +2,9 @@ package com.example.sagar.moviestvshows;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +43,10 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Mo
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         viewPager = findViewById(R.id.viewPager);
+        android.app.FragmentManager fragmentManager = getFragmentManager();
+        android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new MoviesFragment(),pageTitle[0]);
         viewPagerAdapter.addFragment(new TvFragment(),pageTitle[1]);
@@ -52,6 +59,25 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Mo
         tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.cardview_dark_background));
 
     }
+
+//    private FragmentManager.OnBackStackChangedListener getListener() {
+//
+//        FragmentManager.OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
+//            public void onBackStackChanged() {
+//                FragmentManager manager = getSupportFragmentManager();
+//                if (manager != null) {
+//                    int backStackEntryCount = manager.getBackStackEntryCount();
+//                    if (backStackEntryCount == 0) {
+//                        finish();
+//                    }
+//                    Fragment fragment = manager.getFragments()
+//                            .get(backStackEntryCount - 1);
+//                    fragment.onResume();
+//                }
+//            }
+//        };
+//        return result;
+//    }
 
 
     @Override

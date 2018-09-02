@@ -37,6 +37,16 @@ public class FavoriteFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        favoritesDAO=  TmdbDatabase.getInstance(getContext()).getFavoritesDAO();
+        favourites.clear();
+        favourites.addAll((ArrayList<Favourite>)favoritesDAO.getAllFavorites());
+        adapter.notifyDataSetChanged();
+    }
+
+
+    @Override
     public void onResume() {
         super.onResume();
         favoritesDAO=  TmdbDatabase.getInstance(getContext()).getFavoritesDAO();
